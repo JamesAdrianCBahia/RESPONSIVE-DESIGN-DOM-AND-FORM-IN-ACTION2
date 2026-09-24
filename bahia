@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Directory</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+        }
+
+        /* Form */
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+
+        form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 15px;
+        }
+
+        .add-btn {
+            background-color: #1e3a8a;
+            color: white;
+            align-self: end;
+        }
+
+        .add-btn:hover {
+            background-color: #152c6b;
+        }
+
+        /* Student Display */
+        .student-section h2 {
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+
+        #studentContainer {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .student-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .student-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .student-card p {
+            margin-bottom: 15px;
+        }
+
+        .remove-btn {
+            background-color: #dc2626;
+            color: white;
+            width: 100%;
+        }
+
+        .remove-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Tablet - 3 cards */
+        @media (max-width: 992px) {
+            #studentContainer {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile - 1 card */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            #studentContainer {
+                grid-template-columns: 1fr;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <h1>Student Directory</h1>
+            <p>
+                A simple student directory where you can add and remove
+                student information dynamically.
+            </p>
+        </header>
+
+        <!-- Student Form -->
+        <div class="form-container">
+            <h2>Add Student</h2>
+
+            <form id="studentForm">
+
+                <div class="form-group">
+                    <label for="studentName">Student Name</label>
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter student name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <input
+                        type="text"
+                        id="program"
+                        placeholder="Enter program"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="add-btn">
+                    Add Student
+                </button>
+
+            </form>
+        </div>
+
+        <!-- Student Display Area -->
+        <div class="student-section">
+            <h2>Students</h2>
+
+            <div id="studentContainer">
+                <!-- Student cards will be created here using JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        // Get the form and student container
+        const studentForm = document.getElementById("studentForm");
+        const studentContainer = document.getElementById("studentContainer");
+
+        // Handle form submission
+        studentForm.addEventListener("submit", function(event) {
+
+            // Prevent page from reloading
+            event.preventDefault();
+
+            // Get input values
+            const studentName =
+                document.getElementById("studentName").value.trim();
+
+            const program =
+                document.getElementById("program").value.trim();
+
+            // Create student card
+            const studentCard = document.createElement("div");
+            studentCard.classList.add("student-card");
+
+            // Create student name
+            const nameElement = document.createElement("h3");
+            nameElement.textContent = studentName;
+
+            // Create program
+            const programElement = document.createElement("p");
+            programElement.textContent = "Program: " + program;
+
+            // Create Remove button
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("remove-btn");
+
+            // Remove student card when clicked
+            removeButton.addEventListener("click", function() {
+                studentCard.remove();
+            });
+
+            // Put elements inside card
+            studentCard.appendChild(nameElement);
+            studentCard.appendChild(programElement);
+            studentCard.appendChild(removeButton);
+
+            // Display card
+            studentContainer.appendChild(studentCard);
+
+            // Clear form
+            studentForm.reset();
+
+        });
+
+    </script>
+
+</body>
+</html>
